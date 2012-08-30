@@ -1,3 +1,8 @@
+Vision for ocwesome
+- guided to and through material for learning
+- test your knowledge automaticaly
+- get help from the crowd
+
 # README for a newly created project.
 test2.
 There are a couple of things you should do first, before you can use all of Git's power:
