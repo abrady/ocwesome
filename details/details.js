@@ -1,6 +1,7 @@
-use strict;
+
 var jade = require('jade');
 var log = require('winston');
+
 exports.render = function(course, part, res) {
   var locals = {
     course: course,
@@ -9,17 +10,24 @@ exports.render = function(course, part, res) {
   var options = {
     locals: locals,
 //    filename : "details/details.js",
-//    debug : true, //  Outputs tokens and function body generated
+    debug : true, //  Outputs tokens and function body generated
 // compiler Compiler to replace jade's default
-//    compileDebug : process.env.debug, // When false no debug instrumentation is compiled
+    compileDebug : process.env.debug, // When false no debug instrumentation is compiled
     pretty : true // Add pretty-indentation whitespace to output (false by default)
 };
   var jade_file = 'details/details.jade';
-  jade.renderFile(jade_file, options, function(err, str) {
-    if(err) {
-      log.error('failed to render details.jade:'+err);
-    } else {
-      res.send(str);   
-    }
-  });
+  log.info('pre render '+jade_file);
+  try {
+    jade.renderFile(jade_file, options, function(err, str) {
+      log.info('!!!! inside jade.renderFile('+jade_file+')')
+      if(err) {
+        log.error('failed to render details.jade:'+err);
+        res.send(err.message);
+      } else {
+        res.send(str);   
+      }
+    });
+  } catch(e) {
+    log.error('got exception: '+e.message);
+  }
 }
