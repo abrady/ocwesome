@@ -1,8 +1,11 @@
 <style>
 .details .material {  
+  border: 1px black;
 }
 
 .details .comments {
+  background-color: gray;
+  border: 1px black;
 }
 
 .details .comments {
