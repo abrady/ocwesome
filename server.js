@@ -1,19 +1,20 @@
 var express = require('express');
-var app = express();
+var fs = require('fs');
 var jade = require('jade');
-var details = require('./details/details.js');
-//app.engine('jade', jade.__express); // TODO - think about this
 var log = require('winston');
 
-var jade_render = function(jade_file, locals) {
+var app = express();
+//app.engine('jade', jade.__express); // TODO - think about this
+
+var jade_render = function(jade_file, locals, res) {
   var options = {
-    env: locals,
 //    filename : "details/details.js",
-    debug : true, //  Outputs tokens and function body generated
+//    debug : true, //  Outputs tokens and function body generated
 // compiler Compiler to replace jade's default
     compileDebug : process.env.debug, // When false no debug instrumentation is compiled
-    pretty : true // Add pretty-indentation whitespace to output (false by default)
-};
+//    pretty : true // Add pretty-indentation whitespace to output (false by default)
+    env: locals
+  };
   try {
     jade.renderFile(jade_file, options, function(err, str) {
       if(err) {
@@ -29,21 +30,35 @@ var jade_render = function(jade_file, locals) {
   }
 }
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   // recompiling for iteration reasons, should be outside
-  var locals = {name: 'aaron'};
+  var env = {name: 'aaron'};
   log.info('/root');
-  jade_render()
+  jade_render('server/index.jade', env, res);
 });
 
-app.get('login', functin(req, res) {
+app.get('/login', function(req, res) {
   
-})
+});
+
+app.get('/client/js/:file', function(req, res) {
+  var path = 'client/js/'+req.params.file;
+  log.info('sending js:'+path);
+  var src = fs.readFileSync(path, 'utf8');
+  if (src) {
+    res.send(src);
+  } else {
+    log.info('bad req for path '+path);
+    res.send('');
+  }
+});
+
 app.get('/:course/:part', function(req, res) {
-    var course = req.params.course;
-    var part = req.params.part;
-    log.info('/'+course+'/'+part)
-    details.render(course, part, res);
+  var details = require('./details/details.js');
+  var course = req.params.course;
+  var part = req.params.part;
+  log.info('/'+course+'/'+part)
+  details.render(course, part, res);
 });
 
 log.info('starting on ' + process.env.PORT);
