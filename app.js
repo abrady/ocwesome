@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 
+var env = require('./env');
 var express = require('express')
   , routes = require('./routes');
 
@@ -33,8 +34,8 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/classes/:name:', classes.index)
+// app.get('/classes/:name:', classes.index)
 app.get('async/facebook/onClientLogin', routes.facebook.onClientLogin);
 
-app.listen(process.env.PORT);
-console.log("Express server %s mode", app.settings.env);
+app.listen(env.PORT);
+console.log("Express server " + app.settings.env + " port " + env.PORT);
