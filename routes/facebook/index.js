@@ -1,8 +1,12 @@
+var log = require('winston');
 
-/*
- * GET home page.
- */
+var async = require('../common/async');
 
-exports.login = function(req, res){
-  res.render('index', { title: 'Express' });
+
+exports.onClientLogin = function(req, res){
+  req.session.user = {}
+  req.session.user.id = req.param.uid;
+  req.session.user.access_token = req.param.token;
+  log.info('setting user to '+req.session.user.id);
+  res.render(JSON.stringify(new async.AsyncRes(true)));
 };

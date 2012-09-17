@@ -15,7 +15,8 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  // express.cookieParser(),
+  app.use(express.session({ secret: 'some sort of secret' }));
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -32,7 +33,8 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/facebook/login', routes.facebook.login);
+app.get('/classes/:name:', classes.index)
+app.get('async/facebook/onClientLogin', routes.facebook.onClientLogin);
 
 app.listen(process.env.PORT);
 console.log("Express server %s mode", app.settings.env);
