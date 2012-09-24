@@ -1,0 +1,13 @@
+h1 Express
+h2 layouts
+- http://expressjs.com/guide.html#view-rendering
+- You can specify a separate layout for each route though:
+res.render('page', { layout: 'mylayout.jade' }); 
+// you can omit .jade if you set the view engine to jade
+- layout jade file:
+!!! 5
+html(lang="en")
+  head
+    title Testing 123
+  body
+    div!= body

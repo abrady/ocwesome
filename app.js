@@ -33,7 +33,10 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/classes/:name:', classes.index)
+
+var classes = require('./routes/classes');
+app.get('/classes', classes.renderIndex);
+app.get('/classes/:name', classes.renderClass);
 app.get('async/facebook/onClientLogin', routes.facebook.onClientLogin);
 
 app.listen(process.env.PORT);
